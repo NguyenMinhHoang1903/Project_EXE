@@ -1,81 +1,107 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import logo from "../../assets/img/logo.png";
 
 const Header = () => {
-  const [sticky, setSticky] = useState(false);
-  const [slideIndex, setSlideIndex] = useState(1);
   const [darkMode, setDarkMode] = useState(false);
 
-  // Sticky header effect
-  useEffect(() => {
-    const handleScroll = () => {
-      setSticky(window.scrollY > 0);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-  // Dark mode toggle
-  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+  const toggleDarkMode = () => {
+    setDarkMode((prevMode) => !prevMode);
+    const body = document.body;
+    body.classList.toggle("bg-gray-900", !darkMode);
+    body.classList.toggle("text-white", !darkMode);
+    body.classList.toggle("bg-white", darkMode);
+    body.classList.toggle("text-black", darkMode);
+  };
 
   return (
-    <div
-      className={`${
-        darkMode ? "dark" : ""
-      } bg-[#f9fafc] font-sans text-[#333] leading-relaxed`}
+    <header
+      className={`bg-gradient-to-br from-gray-700 to-gray-700 py-8 fixed top-0 w-full z-50 shadow-lg flex items-center transition duration-300 ${
+        darkMode ? "bg-gray-900" : "bg-gradient-to-br from-gray-800 to-gray-700"
+      }`}
     >
-      <header
-        className={`${
-          sticky ? "sticky top-0" : ""
-        } bg-gradient-to-r from-gray-800 to-gray-900 p-4 fixed top-0 w-full z-50 shadow-md flex items-center`}
-      >
-        <div className="flex items-center w-full px-5 justify-between">
-          <img src={logo} alt="Logo" className="h-16 rounded-full" />
-          <nav className="flex-grow flex justify-center space-x-6">
-            <a
-              href="#"
-              className="text-white font-semibold text-lg hover:underline"
-            >
-              Home
-            </a>
-            <a
-              href="#"
-              className="text-white font-semibold text-lg hover:underline"
-            >
-              Services
-            </a>
-            <a
-              href="#"
-              className="text-white font-semibold text-lg hover:underline"
-            >
-              About
-            </a>
-          </nav>
-          <div className="dark-mode-toggle">
-            <input
-              type="checkbox"
-              id="darkModeSwitch"
-              checked={darkMode}
-              onChange={toggleDarkMode}
-            />
-            <label htmlFor="darkModeSwitch">
-              <span className="sun-icon">☀️</span>
-              <span className="moon-icon">🌙</span>
-            </label>
-          </div>
-          <div className="absolute top-0 right-6 flex space-x-4 text-sm">
-            <a
-              href="#"
-              className="text-white border-r hover:text-blue-600 border-black pr-4"
-            >
-              Sign In
-            </a>
-            <a href="#" className="text-blue-400 hover:text-blue-600">
-              Sign Up
-            </a>
-          </div>
+      <div className="container mx-auto flex justify-between items-center px-4">
+        <div className="leftcontent">
+          <a href="#">
+            <img src={logo} alt="Logo" className="w-12 h-12 rounded-full" />
+          </a>
         </div>
-      </header>
-    </div>
+        <nav className="centercontent flex-grow">
+          <ul className="flex justify-center space-x-6">
+            <li>
+              <a
+                href="#about"
+                className="text-white font-medium text-lg transition hover:underline hover:text-blue-500"
+              >
+                About Us
+              </a>
+            </li>
+            <li>
+              <a
+                href="#services"
+                className="text-white font-medium text-lg transition hover:underline hover:text-blue-500"
+              >
+                Services
+              </a>
+            </li>
+            <li>
+              <a
+                href="#contact"
+                className="text-white font-medium text-lg transition hover:underline hover:text-blue-500"
+              >
+                Contact
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div className="dark-mode-toggle relative inline-block w-16 h-8 ml-2">
+          <input
+            type="checkbox"
+            id="darkModeSwitch"
+            className="hidden"
+            checked={darkMode}
+            onChange={toggleDarkMode}
+          />
+          <label
+            htmlFor="darkModeSwitch"
+            className="block w-full h-full bg-gray-800 rounded-full cursor-pointer transition"
+          >
+            <span
+              className={`sun-icon absolute top-1 left-1 text-white transition-opacity duration-300 ${
+                darkMode ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              ☀️
+            </span>
+            <span
+              className={`moon-icon absolute top-1 right-1 text-white transition-opacity duration-300 ${
+                darkMode ? "opacity-0" : "opacity-100"
+              }`}
+            >
+              🌙
+            </span>
+            <span
+              className={`block w-8 h-8 bg-white rounded-full transition-transform duration-300 transform ${
+                darkMode ? "translate-x-8" : "translate-x-0"
+              }`}
+            ></span>
+          </label>
+        </div>
+        <div className="rightcontent flex items-center space-x-2">
+          <a
+            className="btn1 text-white text-sm px-2 border-r border-black transition"
+            href="#"
+          >
+            Sign Up
+          </a>
+          <a
+            className="text-blue-300 text-sm transition hover:text-blue-600"
+            href="#"
+          >
+            Sign In
+          </a>
+        </div>
+      </div>
+    </header>
   );
 };
 
